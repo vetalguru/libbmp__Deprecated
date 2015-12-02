@@ -1,5 +1,6 @@
 #include <iostream>
 #include "gtest/gtest.h"
+#include "libbmp.h"
 
 TEST(TestTest, Test)
 {
