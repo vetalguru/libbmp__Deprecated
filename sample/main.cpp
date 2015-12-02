@@ -3,8 +3,9 @@
 
 int main()
 {
-    std::cout << "Sample" << std::endl;
+    BMPImage *bmp = new BMPImage(std::string());
+
+    delete bmp;
 
     return 0;
 }
-

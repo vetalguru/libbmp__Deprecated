@@ -1,15 +1,27 @@
-// BMP format headers
+// BMP headers
 
 #include <stdint.h>
 
-// BITMAP FFILE HEADER
-typedef struct tagBITMAPFILEHEADER
+// BITMAP FILE HEADER
+struct BITMAPFILEHEADER
 {
-    uint16_t bfType;
-    uint32_t bfSize;
-    uint16_t bfReserved1;
-    uint16_t bfReserved2;
-    uint16_t bfOffBits;
-} BITMAPFILEHEADER;
+    unsigned short bfType;
+    unsigned int   bfSize;
+    unsigned short bfReserved1;
+    unsigned short bfReserved2;
+    unsigned int   bfOffBits;
 
-const unsigned BITMAPFILEHEADER_SIZE = 12;
+    BITMAPFILEHEADER& operator = (const BITMAPFILEHEADER& arg)
+    {
+        bfType = arg.bfType;
+        bfSize = arg.bfSize;
+        bfReserved1 = arg.bfReserved1;
+        bfReserved2 = arg.bfReserved2;
+        bfOffBits = arg.bfOffBits;
+
+        return *this;
+    }
+
+};
+
+const unsigned BITMAPFILEHEADER_SIZE = 14;
