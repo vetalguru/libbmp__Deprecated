@@ -1,6 +1,10 @@
 // BMP headers
 
+#ifndef BMP_HEADERS_H
+#define BMP_HEADERS_H
+
 #include <stdint.h>
+#include "common.h"
 
 // BITMAP FILE HEADER
 struct BITMAPFILEHEADER
@@ -22,14 +26,23 @@ struct BITMAPFILEHEADER
         return *this;
     }
 
+    void changeBytesOrder()
+    {
+        bfType      = swapBytes_16(bfType);
+        bfSize      = swapBytes_32(bfSize);
+        bfReserved1 = swapBytes_16(bfReserved1);
+        bfReserved2 = swapBytes_16(bfReserved2);
+        bfOffBits   = swapBytes_32(bfOffBits);
+    }
+
 };
 
 // BITMAP CORE HEADER
 struct BITMAPCOREHEADER
 {
     unsigned int   biSize;
-    int biWidth;
-    int biHeight;
+    int            biWidth;
+    int            biHeight;
     unsigned short biPlanes;
     unsigned short biBitCount;
 
@@ -42,6 +55,15 @@ struct BITMAPCOREHEADER
         biBitCount = arg.biBitCount;
 
         return *this;
+    }
+
+    void changeBytesOrder()
+    {
+        biSize     = swapBytes_32(biSize);
+        biWidth    = swapBytes_32(biWidth);
+        biHeight   = swapBytes_32(biHeight);
+        biPlanes   = swapBytes_16(biPlanes);
+        biBitCount = swapBytes_16(biBitCount);
     }
 
 };
@@ -78,6 +100,21 @@ struct BITMAPINFOHEADER
          return *this;
     }
 
+    void changeBytesOrder()
+    {
+        biSize          = swapBytes_32(biSize);
+        biWidth         = swapBytes_32(biWidth);
+        biHeight        = swapBytes_32(biHeight);
+        biPlanes        = swapBytes_16(biPlanes);
+        biBitCount      = swapBytes_16(biBitCount);
+        biCompression   = swapBytes_32(biCompression);
+        biSizeImage     = swapBytes_32(biSizeImage);
+        biXPelsPerMeter = swapBytes_32(biXPelsPerMeter);
+        biYPelsPerMeter = swapBytes_32(biYPelsPerMeter);
+        biClrUsed       = swapBytes_32(biClrUsed);
+        biClrImportant  = swapBytes_32(biClrImportant);
+    }
+
 };
 
 // BITMAP V4 HEADER
@@ -97,6 +134,13 @@ struct CIEXYZ
 
         return *this;
     }
+
+    void changeBytesOrder()
+    {
+        ciexyzX = swapBytes_32(ciexyzX);
+        ciexyzY = swapBytes_32(ciexyzY);
+        ciexyzZ = swapBytes_32(ciexyzZ);
+    }
 };
 
 
@@ -111,6 +155,13 @@ struct CIEXYZTRIPLE
         ciexyzRed   = arg.ciexyzRed;
         ciexyzGreen = arg.ciexyzGreen;
         ciexyzBlue  = arg.ciexyzBlue;
+    }
+
+    void changeBytesOrder()
+    {
+        ciexyzRed.changeBytesOrder();
+        ciexyzGreen.changeBytesOrder();
+        ciexyzBlue.changeBytesOrder();
     }
 };
 
@@ -161,6 +212,32 @@ struct BITMAPV4HEADER
         bibV4GammaBlue  = arg.bibV4GammaBlue;
 
         return *this;
+    }
+
+    void changeBytesOrder()
+    {
+        biSize          = swapBytes_32(biSize);
+        biWidth         = swapBytes_32(biWidth);
+        biHeight        = swapBytes_32(biHeight);
+        biPlanes        = swapBytes_16(biPlanes);
+        biBitCount      = swapBytes_16(biBitCount);
+        biCompression   = swapBytes_32(biCompression);
+        biSizeImage     = swapBytes_32(biSizeImage);
+        biXPelsPerMeter = swapBytes_32(biXPelsPerMeter);
+        biYPelsPerMeter = swapBytes_32(biYPelsPerMeter);
+        biClrUsed       = swapBytes_32(biClrUsed);
+        biClrImportant  = swapBytes_32(biClrImportant);
+        biRedMask       = swapBytes_32(biRedMask);
+        biGreenMask     = swapBytes_32(biGreenMask);
+        biBlueMask      = swapBytes_32(biBlueMask);
+        biAlphaMask     = swapBytes_32(biAlphaMask);
+        biCSType        = swapBytes_32(biCSType);
+
+        biEndpoints.changeBytesOrder();
+
+        biGammaRed      = swapBytes_32(biGammaRed);
+        biGammaGreen    = swapBytes_32(biGammaGreen);
+        bibV4GammaBlue  = swapBytes_32(bibV4GammaBlue);
     }
 
 };
@@ -224,6 +301,36 @@ struct BITMAPV5HEADER
         return *this;
     }
 
+    void changeBytesOrder()
+    {
+        biSize          = swapBytes_32(biSize);
+        biWidth         = swapBytes_32(biWidth);
+        biHeight        = swapBytes_32(biHeight);
+        biPlanes        = swapBytes_16(biPlanes);
+        biBitCount      = swapBytes_16(biBitCount);
+        biCompression   = swapBytes_32(biCompression);
+        biSizeImage     = swapBytes_32(biSizeImage);
+        biXPelsPerMeter = swapBytes_32(biXPelsPerMeter);
+        biYPelsPerMeter = swapBytes_32(biYPelsPerMeter);
+        biClrUsed       = swapBytes_32(biClrUsed);
+        biClrImportant  = swapBytes_32(biClrImportant);
+        biRedMask       = swapBytes_32(biRedMask);
+        biGreenMask     = swapBytes_32(biGreenMask);
+        biBlueMask      = swapBytes_32(biBlueMask);
+        biAlphaMask     = swapBytes_32(biAlphaMask);
+        biCSType        = swapBytes_32(biCSType);
+
+        biEndpoints.changeBytesOrder();
+
+        biGammaRed      = swapBytes_32(biGammaRed);
+        biGammaGreen    = swapBytes_32(biGammaGreen);
+        biGammaBlue     = swapBytes_32(biGammaBlue);
+        biIntent        = swapBytes_32(biIntent);
+        biProfileData   = swapBytes_32(biProfileData);
+        biProfileSize   = swapBytes_32(biProfileSize);
+        biReserved      = swapBytes_32(biReserved);
+    }
+
 };
 
 
@@ -234,3 +341,4 @@ const unsigned BITMAPINFOHEADER_SIZE = 40;
 const unsigned BITMAPV4HEADER_SIZE   = 108;
 const unsigned BITMAPV5HEADER_SIZE   = 124;
 
+#endif // BMP_HEADERS_H
