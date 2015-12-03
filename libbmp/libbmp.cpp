@@ -3,7 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
-#include <vector>
+#include <stdio.h>
 
 BMPImage::BMPImage(const std::string& aFileName)
     : m_isValid(false)
@@ -44,6 +44,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
     if(!m_bmpFile)
         return false;
 
+    // GET FILE HEADER
     BITMAPFILEHEADER fileHeader;
     if(!parseBitmapFileHeader(m_bmpFile, fileHeader))
     {
@@ -59,16 +60,100 @@ bool BMPImage::parseFile(const std::string& aFileName)
         return false;
     }
 
-    BITMAPINFOHEADER infoHeader;
-    if(!parseBitmapInfoHeader(m_bmpFile, infoHeader))
+
+    // GET INFO HEADER
+    fpos_t file_loc;
+    if(fgetpos(m_bmpFile, &file_loc))
     {
         fclose(m_bmpFile);
         m_bmpFile = NULL;
         return false;
     }
 
-    m_width  = infoHeader.biWidth;
-    m_height = infoHeader.biHeight;
+    unsigned int headerSize = 0;
+    if(!fread(&headerSize, 4, 1, m_bmpFile))
+    {
+        fclose(m_bmpFile);
+        m_bmpFile = NULL;
+        return false;
+    }
+
+    if(fsetpos(m_bmpFile, &file_loc))
+    {
+        fclose(m_bmpFile);
+        m_bmpFile = NULL;
+        return false;
+    }
+
+    switch(headerSize)
+    {
+        case BITMAPCOREHEADER_SIZE:
+        {
+            BITMAPCOREHEADER coreHeader;
+            if(!parseBitmapCoreHeader(m_bmpFile, coreHeader))
+            {
+                fclose(m_bmpFile);
+                m_bmpFile = NULL;
+                return false;
+            }
+
+            m_width  = coreHeader.biWidth;
+            m_height = coreHeader.biHeight;
+
+            break;
+        }
+        case BITMAPINFOHEADER_SIZE:
+        {
+            BITMAPINFOHEADER infoHeader;
+            if(!parseBitmapInfoHeader(m_bmpFile, infoHeader))
+            {
+                fclose(m_bmpFile);
+                m_bmpFile = NULL;
+                return false;
+            }
+
+            m_width  = infoHeader.biWidth;
+            m_height = infoHeader.biHeight;
+
+            break;
+        }
+        case BITMAPV4HEADER_SIZE:
+        {
+            BITMAPV4HEADER v4Header;
+            if(!parseBitmapV4Header(m_bmpFile, v4Header))
+            {
+                fclose(m_bmpFile);
+                m_bmpFile = NULL;
+                return false;
+            }
+
+            m_width  = v4Header.biWidth;
+            m_height = v4Header.biHeight;
+
+            break;
+        }
+        case BITMAPV5HEADER_SIZE:
+        {
+            BITMAPV5HEADER v5Header;
+            if(!parseBitmapV5Header(m_bmpFile, v5Header))
+            {
+                fclose(m_bmpFile);
+                m_bmpFile = NULL;
+                return false;
+            }
+
+            m_width  = v5Header.biWidth;
+            m_height = v5Header.biHeight;
+
+            break;
+        }
+        default:
+        {
+            fclose(m_bmpFile);
+            m_bmpFile = NULL;
+            return false;
+        }
+    }
 
     return true;
 }
@@ -142,4 +227,3 @@ bool BMPImage::parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  )
 
     return false;
 }
-
