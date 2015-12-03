@@ -128,3 +128,18 @@ bool BMPImage::parseBitmapV4Header(FILE *file, BITMAPV4HEADER& aV4Header)
 
     return true;
 }
+
+bool BMPImage::parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  )
+{
+    if(!file)
+        return false;
+
+    if(!fread(&aV5Header, BITMAPV5HEADER_SIZE, 1, file))
+        return false;
+
+    if(isBigEndian())
+        aV5Header.changeBytesOrder();
+
+    return false;
+}
+
