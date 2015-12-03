@@ -11,6 +11,7 @@ BMPImage::BMPImage(const std::string& aFileName)
     , m_width(0)
     , m_height(0)
     , m_bitCount(0)
+    , m_compresionType(BI_RGB)
 {
     m_isValid = parseFile(aFileName);
 }
@@ -34,6 +35,16 @@ unsigned BMPImage::width()
 unsigned BMPImage::height()
 {
     return abs(m_height);
+}
+
+unsigned short BMPImage::bitCount()
+{
+    return m_bitCount;
+}
+
+BMPImage::CompressionType BMPImage::compressionType()
+{
+   return m_compresionType;
 }
 
 bool BMPImage::parseFile(const std::string& aFileName)
@@ -117,6 +128,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
             m_width  = infoHeader.biWidth;
             m_height = infoHeader.biHeight;
             m_bitCount = infoHeader.biBitCount;
+            m_compresionType = geTypeByIndex(infoHeader.biCompression);
 
             break;
         }
@@ -133,6 +145,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
             m_width  = v4Header.biWidth;
             m_height = v4Header.biHeight;
             m_bitCount = v4Header.biBitCount;
+            m_compresionType = geTypeByIndex(v4Header.biCompression);
 
             break;
         }
@@ -149,6 +162,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
             m_width  = v5Header.biWidth;
             m_height = v5Header.biHeight;
             m_bitCount = v5Header.biBitCount;
+            m_compresionType = geTypeByIndex(v5Header.biCompression);
 
             break;
         }
@@ -232,3 +246,50 @@ bool BMPImage::parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  )
 
     return false;
 }
+
+BMPImage::CompressionType BMPImage::geTypeByIndex(unsigned aIndex)
+{
+    CompressionType result = BI_RGB;
+
+    switch(aIndex)
+    {
+        case 0:
+            {
+                result = BI_RGB;
+                break;
+            }
+        case 1:
+            {
+                result = BI_RLE8;
+                break;
+            }
+        case 2:
+            {
+                result = BI_RLE4;
+                break;
+            }
+        case 3:
+            {
+                result = BI_BITFIELDS;
+                break;
+            }
+        case 4:
+            {
+                result = BI_JPEG;
+                break;
+            }
+        case 5:
+            {
+                result = BI_PNG;
+                break;
+            }
+        case 6:
+            {
+                result = BI_ALPHABITFIELDS;
+                break;
+            }
+    }
+
+    return result;
+}
+

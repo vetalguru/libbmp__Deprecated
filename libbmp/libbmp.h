@@ -7,6 +7,18 @@
 class BMPImage
 {
 public:
+    enum CompressionType
+    {
+        BI_RGB = 0,
+        BI_RLE8,
+        BI_RLE4,
+        BI_BITFIELDS,
+        BI_JPEG,
+        BI_PNG,
+        BI_ALPHABITFIELDS,
+    };
+
+public:
     BMPImage(const std::string& aFileName);
     ~BMPImage();
 
@@ -16,6 +28,7 @@ public:
     unsigned height();
 
     unsigned short bitCount();
+    CompressionType compressionType();
 
 private:
     bool parseFile(const std::string& aFileName);
@@ -26,6 +39,9 @@ private:
     bool parseBitmapV4Header  (FILE *file, BITMAPV4HEADER&   aV4Header  );
     bool parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  );
 
+
+    CompressionType geTypeByIndex(unsigned aIndex);
+
 private:
     bool m_isValid;
 
@@ -35,6 +51,7 @@ private:
     int m_height;
 
     unsigned short m_bitCount;
+    CompressionType m_compresionType;
 };
 
 #endif // LIB_BMP_H
