@@ -41,8 +41,8 @@ struct BITMAPFILEHEADER
 struct BITMAPCOREHEADER
 {
     unsigned int   biSize;
-    int            biWidth;
-    int            biHeight;
+    unsigned short biWidth;
+    unsigned short biHeight;
     unsigned short biPlanes;
     unsigned short biBitCount;
 
@@ -60,8 +60,8 @@ struct BITMAPCOREHEADER
     void changeBytesOrder()
     {
         biSize     = swapBytes_32(biSize);
-        biWidth    = swapBytes_32(biWidth);
-        biHeight   = swapBytes_32(biHeight);
+        biWidth    = swapBytes_16(biWidth);
+        biHeight   = swapBytes_16(biHeight);
         biPlanes   = swapBytes_16(biPlanes);
         biBitCount = swapBytes_16(biBitCount);
     }
