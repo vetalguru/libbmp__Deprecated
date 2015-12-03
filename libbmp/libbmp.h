@@ -12,6 +12,9 @@ public:
 
     bool isValid();
 
+    unsigned width();
+    unsigned height();
+
 private:
     bool parseFile(const std::string& aFileName);
 
@@ -22,6 +25,9 @@ private:
     bool m_isValid;
 
     FILE *m_bmpFile;
+
+    int m_width;
+    int m_height;
 };
 
 #endif // LIB_BMP_H

@@ -1,12 +1,15 @@
 #include "libbmp.h"
 #include "common.h"
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 #include <vector>
 
 BMPImage::BMPImage(const std::string& aFileName)
     : m_isValid(false)
     , m_bmpFile(NULL)
+    , m_width(0)
+    , m_height(0)
 {
     m_isValid = parseFile(aFileName);
 }
@@ -20,6 +23,16 @@ BMPImage::~BMPImage()
 bool BMPImage::isValid()
 {
     return m_isValid;
+}
+
+unsigned BMPImage::width()
+{
+    return m_width;
+}
+
+unsigned BMPImage::height()
+{
+    return abs(m_height);
 }
 
 bool BMPImage::parseFile(const std::string& aFileName)
@@ -53,6 +66,9 @@ bool BMPImage::parseFile(const std::string& aFileName)
         m_bmpFile = NULL;
         return false;
     }
+
+    m_width  = infoHeader.biWidth;
+    m_height = infoHeader.biHeight;
 
     return true;
 }
