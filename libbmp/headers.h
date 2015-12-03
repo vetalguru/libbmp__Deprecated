@@ -28,8 +28,8 @@ struct BITMAPFILEHEADER
 struct BITMAPCOREHEADER
 {
     unsigned int   biSize;
-    unsigned short biWidth;
-    unsigned short biHeight;
+    int biWidth;
+    int biHeight;
     unsigned short biPlanes;
     unsigned short biBitCount;
 

@@ -21,6 +21,7 @@ private:
     bool parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
     bool parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader);
     bool parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader);
+    bool parseBitmapV4Header  (FILE *file, BITMAPV4HEADER&   aV4Header  );
 
 private:
     bool m_isValid;
