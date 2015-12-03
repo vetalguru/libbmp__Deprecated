@@ -10,6 +10,7 @@ BMPImage::BMPImage(const std::string& aFileName)
     , m_bmpFile(NULL)
     , m_width(0)
     , m_height(0)
+    , m_bitCount(0)
 {
     m_isValid = parseFile(aFileName);
 }
@@ -99,6 +100,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = coreHeader.biWidth;
             m_height = coreHeader.biHeight;
+            m_bitCount = coreHeader.biBitCount;
 
             break;
         }
@@ -114,6 +116,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = infoHeader.biWidth;
             m_height = infoHeader.biHeight;
+            m_bitCount = infoHeader.biBitCount;
 
             break;
         }
@@ -129,6 +132,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = v4Header.biWidth;
             m_height = v4Header.biHeight;
+            m_bitCount = v4Header.biBitCount;
 
             break;
         }
@@ -144,6 +148,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = v5Header.biWidth;
             m_height = v5Header.biHeight;
+            m_bitCount = v5Header.biBitCount;
 
             break;
         }

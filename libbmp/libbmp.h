@@ -15,6 +15,8 @@ public:
     unsigned width();
     unsigned height();
 
+    unsigned short bitCount();
+
 private:
     bool parseFile(const std::string& aFileName);
 
@@ -31,7 +33,8 @@ private:
 
     int m_width;
     int m_height;
+
+    unsigned short m_bitCount;
 };
 
 #endif // LIB_BMP_H
-
