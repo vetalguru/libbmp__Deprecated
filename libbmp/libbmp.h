@@ -16,6 +16,7 @@ private:
     bool parseFile(const std::string& aFileName);
 
     bool parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
+    bool parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader);
 
 private:
     bool m_isValid;

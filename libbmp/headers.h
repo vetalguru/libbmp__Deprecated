@@ -24,4 +24,41 @@ struct BITMAPFILEHEADER
 
 };
 
+
+// BITMAP INFO HEADER
+struct BITMAPINFOHEADER
+{
+    unsigned int   biSize;
+    int            biWidth;
+    int            biHeight;
+    unsigned short biPlanes;
+    unsigned short biBitCount;
+    unsigned int   biCompression;
+    unsigned int   biSizeImage;
+    int            biXPelsPerMeter;
+    int            biYPelsPerMeter;
+    unsigned int   biClrUsed;
+    unsigned int   biClrImportant;
+
+    BITMAPINFOHEADER& operator = (const BITMAPINFOHEADER& arg)
+    {
+         biSize = arg.biSize;
+         biWidth = arg.biWidth;
+         biHeight = arg.biHeight;
+         biPlanes = arg.biPlanes;
+         biBitCount = arg.biBitCount;
+         biCompression = arg.biCompression;
+         biSizeImage = arg.biSizeImage;
+         biXPelsPerMeter = arg.biXPelsPerMeter;
+         biYPelsPerMeter = arg.biYPelsPerMeter;
+         biClrUsed = arg.biClrUsed;
+         biClrImportant = arg.biClrImportant;
+
+         return *this;
+    }
+
+};
+
 const unsigned BITMAPFILEHEADER_SIZE = 14;
+const unsigned BITMAPINFOHEADER_SIZE = 40;
+

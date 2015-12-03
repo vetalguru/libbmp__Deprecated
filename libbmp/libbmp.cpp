@@ -46,6 +46,14 @@ bool BMPImage::parseFile(const std::string& aFileName)
         return false;
     }
 
+    BITMAPINFOHEADER infoHeader;
+    if(!parseBitmapInfoHeader(m_bmpFile, infoHeader))
+    {
+        fclose(m_bmpFile);
+        m_bmpFile = NULL;
+        return false;
+    }
+
     return true;
 }
 
@@ -54,7 +62,7 @@ bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
     if(!file)
         return false;
 
-    if(!fread(&aFileHeader, sizeof(BITMAPFILEHEADER), 1, file))
+    if(!fread(&aFileHeader, BITMAPFILEHEADER_SIZE, 1, file))
         return false;
 
     if(isBigEndian())
@@ -64,6 +72,32 @@ bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
         aFileHeader.bfReserved1 = swapBytes_16(aFileHeader.bfReserved1);
         aFileHeader.bfReserved2 = swapBytes_16(aFileHeader.bfReserved2);
         aFileHeader.bfOffBits   = swapBytes_32(aFileHeader.bfOffBits);
+    }
+
+    return true;
+}
+
+bool BMPImage::parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader)
+{
+    if(!file)
+        return false;
+
+    if(!fread(&aInfoHeader, BITMAPINFOHEADER_SIZE, 1, file))
+        return false;
+
+    if(isBigEndian())
+    {
+        aInfoHeader.biSize          = swapBytes_32(aInfoHeader.biSize);
+        aInfoHeader.biWidth         = swapBytes_32(aInfoHeader.biWidth);
+        aInfoHeader.biHeight        = swapBytes_32(aInfoHeader.biHeight);
+        aInfoHeader.biPlanes        = swapBytes_16(aInfoHeader.biPlanes);
+        aInfoHeader.biBitCount      = swapBytes_16(aInfoHeader.biBitCount);
+        aInfoHeader.biCompression   = swapBytes_32(aInfoHeader.biCompression);
+        aInfoHeader.biSizeImage     = swapBytes_32(aInfoHeader.biSizeImage);
+        aInfoHeader.biXPelsPerMeter = swapBytes_32(aInfoHeader.biXPelsPerMeter);
+        aInfoHeader.biYPelsPerMeter = swapBytes_32(aInfoHeader.biYPelsPerMeter);
+        aInfoHeader.biClrUsed       = swapBytes_32(aInfoHeader.biClrUsed);
+        aInfoHeader.biClrImportant  = swapBytes_32(aInfoHeader.biClrImportant);
     }
 
     return true;
