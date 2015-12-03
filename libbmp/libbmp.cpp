@@ -93,6 +93,26 @@ bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
     return true;
 }
 
+bool BMPImage::parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader)
+{
+    if(!file)
+        return false;
+
+    if(!fread(&aCoreHeader, BITMAPCOREHEADER_SIZE, 1, file))
+        return false;
+
+    if(isBigEndian())
+    {
+        aCoreHeader.biSize     = swapBytes_32(aCoreHeader.biSize);
+        aCoreHeader.biWidth    = swapBytes_16(aCoreHeader.biWidth);
+        aCoreHeader.biHeight   = swapBytes_16(aCoreHeader.biHeight);
+        aCoreHeader.biPlanes   = swapBytes_16(aCoreHeader.biPlanes);
+        aCoreHeader.biBitCount = swapBytes_16(aCoreHeader.biBitCount);
+    }
+
+    return true;
+}
+
 bool BMPImage::parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader)
 {
     if(!file)

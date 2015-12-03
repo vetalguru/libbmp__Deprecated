@@ -19,6 +19,7 @@ private:
     bool parseFile(const std::string& aFileName);
 
     bool parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
+    bool parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader);
     bool parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader);
 
 private:
