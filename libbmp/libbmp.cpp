@@ -52,7 +52,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
     if(aFileName.empty())
         return false;
 
-    m_bmpFile = fopen(aFileName.c_str(), "r");
+    m_bmpFile = fopen(aFileName.c_str(), "rb");
     if(!m_bmpFile)
         return false;
 
