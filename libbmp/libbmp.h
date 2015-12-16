@@ -50,6 +50,8 @@ private:
     int m_width;
     int m_height;
 
+    int m_imageSize;
+
     unsigned short m_bitCount;
     CompressionType m_compresionType;
 };

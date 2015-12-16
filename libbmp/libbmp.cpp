@@ -10,6 +10,7 @@ BMPImage::BMPImage(const std::string& aFileName)
     , m_bmpFile(NULL)
     , m_width(0)
     , m_height(0)
+    , m_imageSize(0)
     , m_bitCount(0)
     , m_compresionType(BI_RGB)
 {
@@ -127,6 +128,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = infoHeader.biWidth;
             m_height = infoHeader.biHeight;
+            m_imageSize = infoHeader.biSizeImage;
             m_bitCount = infoHeader.biBitCount;
             m_compresionType = geTypeByIndex(infoHeader.biCompression);
 
@@ -144,6 +146,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = v4Header.biWidth;
             m_height = v4Header.biHeight;
+            m_imageSize = v4Header.biSizeImage;
             m_bitCount = v4Header.biBitCount;
             m_compresionType = geTypeByIndex(v4Header.biCompression);
 
@@ -161,6 +164,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
 
             m_width  = v5Header.biWidth;
             m_height = v5Header.biHeight;
+            m_imageSize = v5Header.biSizeImage;
             m_bitCount = v5Header.biBitCount;
             m_compresionType = geTypeByIndex(v5Header.biCompression);
 
@@ -173,6 +177,9 @@ bool BMPImage::parseFile(const std::string& aFileName)
             return false;
         }
     }
+
+    if(!m_imageSize)
+        m_imageSize = (m_width * m_bitCount + m_width % 4) * abs(m_height);
 
     return true;
 }
