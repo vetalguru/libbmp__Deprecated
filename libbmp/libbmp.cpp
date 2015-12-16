@@ -189,13 +189,22 @@ bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
     if(!file)
         return false;
 
-    if(!fread(&aFileHeader, BITMAPFILEHEADER_SIZE, 1, file))
-        return false;
+    bool result = true;
+    result &= fread(&aFileHeader.bfType,      2, 1, file);
+    result &= fread(&aFileHeader.bfSize,      4, 1, file);
+    result &= fread(&aFileHeader.bfReserved1, 2, 1, file);
+    result &= fread(&aFileHeader.bfReserved2, 2, 1, file);
+    result &= fread(&aFileHeader.bfOffBits,   4, 1, file);
+
+    std::cout << sizeof(unsigned int) << std::endl;
+
+    if(!result)
+        return result;
 
     if(isBigEndian())
         aFileHeader.changeBytesOrder();
 
-    return true;
+    return result;
 }
 
 bool BMPImage::parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader)
