@@ -23,6 +23,11 @@ PROJECT(${PROJECT_NAME})
 #######################################
 INCLUDE_DIRECTORIES(${INCLUDE_DIRS_LIST})
 
+#######################################
+# COPY SAMPLE FILES
+#######################################
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test_data DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 enable_testing()
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCES_LIST})

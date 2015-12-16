@@ -1,11 +1,8 @@
 #include <iostream>
 #include "gtest/gtest.h"
 #include "libbmp.h"
+#include "Simple_2x2_24bit_bmp.h"
 
-TEST(TestTest, Test)
-{
-    EXPECT_EQ(2, 2);
-}
 
 int main(int argc, char **argv)
 {
