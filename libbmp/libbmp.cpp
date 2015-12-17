@@ -73,7 +73,7 @@ bool BMPImage::parseFile(const std::string& aFileName)
         return false;
 
     // GET FILE HEADER
-    if(!parseBitmapFileHeader(m_bmpFile, m_fileHeader))
+    if(!decodeBitmapFileHeader(m_bmpFile, m_fileHeader))
     {
         fclose(m_bmpFile);
         m_bmpFile = NULL;
@@ -87,8 +87,35 @@ bool BMPImage::parseFile(const std::string& aFileName)
         return false;
     }
 
+    if(!decodeBitmapInfoHeader(m_bmpFile))
+        return false;
 
-    // GET INFO HEADER
+    return true;
+}
+
+bool BMPImage::decodeBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
+{
+    if(!file)
+        return false;
+
+    bool result = true;
+    result &= fread(&aFileHeader.bfType,      2, 1, file);
+    result &= fread(&aFileHeader.bfSize,      4, 1, file);
+    result &= fread(&aFileHeader.bfReserved1, 2, 1, file);
+    result &= fread(&aFileHeader.bfReserved2, 2, 1, file);
+    result &= fread(&aFileHeader.bfOffBits,   4, 1, file);
+
+    if(isBigEndian())
+        aFileHeader.changeBytesOrder();
+
+    return result;
+}
+
+bool BMPImage::decodeBitmapInfoHeader(FILE *file)
+{
+    if(!file)
+        return false;
+
     fpos_t file_loc;
     if(fgetpos(m_bmpFile, &file_loc))
     {
@@ -196,24 +223,6 @@ bool BMPImage::parseFile(const std::string& aFileName)
         m_imageSize = (m_width * m_bitCount + m_width % 4) * abs(m_height);
 
     return true;
-}
-
-bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
-{
-    if(!file)
-        return false;
-
-    bool result = true;
-    result &= fread(&aFileHeader.bfType,      2, 1, file);
-    result &= fread(&aFileHeader.bfSize,      4, 1, file);
-    result &= fread(&aFileHeader.bfReserved1, 2, 1, file);
-    result &= fread(&aFileHeader.bfReserved2, 2, 1, file);
-    result &= fread(&aFileHeader.bfOffBits,   4, 1, file);
-
-    if(isBigEndian())
-        aFileHeader.changeBytesOrder();
-
-    return result;
 }
 
 bool BMPImage::parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader)

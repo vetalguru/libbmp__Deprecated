@@ -18,6 +18,13 @@ public:
         BI_ALPHABITFIELDS,
     };
 
+    struct PixelColor
+    {
+        unsigned char redColor;
+        unsigned char greenColor;
+        unsigned char blueColor;
+    };
+
 public:
     BMPImage(const std::string& aFileName);
     ~BMPImage();
@@ -38,7 +45,9 @@ public:
 private:
     bool parseFile(const std::string& aFileName);
 
-    bool parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
+    bool decodeBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
+    bool decodeBitmapInfoHeader(FILE *file);
+
     bool parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader);
     bool parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader);
     bool parseBitmapV4Header  (FILE *file, BITMAPV4HEADER&   aV4Header  );
