@@ -24,6 +24,11 @@ public:
 
     bool isValid();
 
+    // File Header
+    unsigned short fileHeaderType();
+    unsigned int   fileHeaderSize();
+    unsigned short fileHeaderBitsOffset();
+
     unsigned width();
     unsigned height();
 
@@ -46,6 +51,8 @@ private:
     bool m_isValid;
 
     FILE *m_bmpFile;
+
+    BITMAPFILEHEADER m_fileHeader;
 
     int m_width;
     int m_height;

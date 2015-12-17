@@ -28,6 +28,21 @@ bool BMPImage::isValid()
     return m_isValid;
 }
 
+unsigned short BMPImage::fileHeaderType()
+{
+    return m_fileHeader.bfType;
+}
+
+unsigned int   BMPImage::fileHeaderSize()
+{
+    return m_fileHeader.bfSize;
+}
+
+unsigned short BMPImage::fileHeaderBitsOffset()
+{
+    return m_fileHeader.bfOffBits;
+}
+
 unsigned BMPImage::width()
 {
     return m_width;
@@ -58,15 +73,14 @@ bool BMPImage::parseFile(const std::string& aFileName)
         return false;
 
     // GET FILE HEADER
-    BITMAPFILEHEADER fileHeader;
-    if(!parseBitmapFileHeader(m_bmpFile, fileHeader))
+    if(!parseBitmapFileHeader(m_bmpFile, m_fileHeader))
     {
         fclose(m_bmpFile);
         m_bmpFile = NULL;
         return false;
     }
 
-    if (fileHeader.bfType != 0x4D42)
+    if (m_fileHeader.bfType != 0x4D42)
     {
         fclose(m_bmpFile);
         m_bmpFile = NULL;
