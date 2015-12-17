@@ -186,7 +186,7 @@ struct BITMAPV4HEADER
     CIEXYZTRIPLE   biEndpoints;
     unsigned int   biGammaRed;
     unsigned int   biGammaGreen;
-    unsigned int   bibV4GammaBlue;
+    unsigned int   biGammaBlue;
 
     BITMAPV4HEADER& operator = (const BITMAPV4HEADER& arg)
     {
@@ -209,7 +209,7 @@ struct BITMAPV4HEADER
         biEndpoints     = arg.biEndpoints;
         biGammaRed      = arg.biGammaRed;
         biGammaGreen    = arg.biGammaGreen;
-        bibV4GammaBlue  = arg.bibV4GammaBlue;
+        biGammaBlue  = arg.biGammaBlue;
 
         return *this;
     }
@@ -237,7 +237,7 @@ struct BITMAPV4HEADER
 
         biGammaRed      = swapBytes_32(biGammaRed);
         biGammaGreen    = swapBytes_32(biGammaGreen);
-        bibV4GammaBlue  = swapBytes_32(bibV4GammaBlue);
+        biGammaBlue     = swapBytes_32(biGammaBlue);
     }
 
 };

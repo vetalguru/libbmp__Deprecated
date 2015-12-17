@@ -196,11 +196,6 @@ bool BMPImage::parseBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader)
     result &= fread(&aFileHeader.bfReserved2, 2, 1, file);
     result &= fread(&aFileHeader.bfOffBits,   4, 1, file);
 
-    std::cout << sizeof(unsigned int) << std::endl;
-
-    if(!result)
-        return result;
-
     if(isBigEndian())
         aFileHeader.changeBytesOrder();
 
@@ -212,8 +207,12 @@ bool BMPImage::parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader)
     if(!file)
         return false;
 
-    if(!fread(&aCoreHeader, BITMAPCOREHEADER_SIZE, 1, file))
-        return false;
+    bool result = true;
+    result &= fread(&aCoreHeader.biSize,     4, 1, file);
+    result &= fread(&aCoreHeader.biWidth,    2, 1, file);
+    result &= fread(&aCoreHeader.biHeight,   2, 1, file);
+    result &= fread(&aCoreHeader.biPlanes,   2, 1, file);
+    result &= fread(&aCoreHeader.biBitCount, 2, 1, file);
 
     if(isBigEndian())
         aCoreHeader.changeBytesOrder();
@@ -226,8 +225,18 @@ bool BMPImage::parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader)
     if(!file)
         return false;
 
-    if(!fread(&aInfoHeader, BITMAPINFOHEADER_SIZE, 1, file))
-        return false;
+    bool result = true;
+    result &= fread(&aInfoHeader.biSize,          4, 1, file);
+    result &= fread(&aInfoHeader.biWidth,         4, 1, file);
+    result &= fread(&aInfoHeader.biHeight,        4, 1, file);
+    result &= fread(&aInfoHeader.biPlanes,        2, 1, file);
+    result &= fread(&aInfoHeader.biBitCount,      2, 1, file);
+    result &= fread(&aInfoHeader.biCompression,   4, 1, file);
+    result &= fread(&aInfoHeader.biSizeImage,     4, 1, file);
+    result &= fread(&aInfoHeader.biXPelsPerMeter, 4, 1, file);
+    result &= fread(&aInfoHeader.biYPelsPerMeter, 4, 1, file);
+    result &= fread(&aInfoHeader.biClrUsed,       4, 1, file);
+    result &= fread(&aInfoHeader.biClrImportant,  4, 1, file);
 
     if(isBigEndian())
         aInfoHeader.changeBytesOrder();
@@ -240,22 +249,84 @@ bool BMPImage::parseBitmapV4Header(FILE *file, BITMAPV4HEADER& aV4Header)
     if(!file)
         return false;
 
-    if(!fread(&aV4Header, BITMAPV4HEADER_SIZE, 1, file))
-        return false;
+    bool result = true;
+    result &= fread(&aV4Header.biSize,          4, 1, file);
+    result &= fread(&aV4Header.biWidth,         4, 1, file);
+    result &= fread(&aV4Header.biHeight,        4, 1, file);
+    result &= fread(&aV4Header.biPlanes,        2, 1, file);
+    result &= fread(&aV4Header.biBitCount,      2, 1, file);
+    result &= fread(&aV4Header.biCompression,   4, 1, file);
+    result &= fread(&aV4Header.biSizeImage,     4, 1, file);
+    result &= fread(&aV4Header.biXPelsPerMeter, 4, 1, file);
+    result &= fread(&aV4Header.biYPelsPerMeter, 4, 1, file);
+    result &= fread(&aV4Header.biClrUsed,       4, 1, file);
+    result &= fread(&aV4Header.biClrImportant,  4, 1, file);
+    result &= fread(&aV4Header.biRedMask,       4, 1, file);
+    result &= fread(&aV4Header.biGreenMask,     4, 1, file);
+    result &= fread(&aV4Header.biBlueMask,      4, 1, file);
+    result &= fread(&aV4Header.biAlphaMask,     4, 1, file);
+    result &= fread(&aV4Header.biCSType,        4, 1, file);
+
+    result &= fread(&aV4Header.biEndpoints.ciexyzRed.ciexyzX,   4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzRed.ciexyzY,   4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzRed.ciexyzZ,   4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzGreen.ciexyzX, 4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzGreen.ciexyzY, 4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzGreen.ciexyzZ, 4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzBlue.ciexyzX,  4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzBlue.ciexyzY,  4, 1, file);
+    result &= fread(&aV4Header.biEndpoints.ciexyzBlue.ciexyzZ,  4, 1, file);
+
+    result &= fread(&aV4Header.biGammaRed,      4, 1, file);
+    result &= fread(&aV4Header.biGammaGreen,    4, 1, file);
+    result &= fread(&aV4Header.biGammaBlue,     4, 1, file);
 
     if(isBigEndian())
         aV4Header.changeBytesOrder();
 
-    return true;
+    return result;
 }
 
-bool BMPImage::parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  )
+bool BMPImage::parseBitmapV5Header  (FILE *file, BITMAPV5HEADER& aV5Header)
 {
     if(!file)
         return false;
 
-    if(!fread(&aV5Header, BITMAPV5HEADER_SIZE, 1, file))
-        return false;
+    bool result = true;
+    result &= fread(&aV5Header.biSize,          4, 1, file);
+    result &= fread(&aV5Header.biWidth,         4, 1, file);
+    result &= fread(&aV5Header.biHeight,        4, 1, file);
+    result &= fread(&aV5Header.biPlanes,        2, 1, file);
+    result &= fread(&aV5Header.biBitCount,      2, 1, file);
+    result &= fread(&aV5Header.biCompression,   4, 1, file);
+    result &= fread(&aV5Header.biSizeImage,     4, 1, file);
+    result &= fread(&aV5Header.biXPelsPerMeter, 4, 1, file);
+    result &= fread(&aV5Header.biYPelsPerMeter, 4, 1, file);
+    result &= fread(&aV5Header.biClrUsed,       4, 1, file);
+    result &= fread(&aV5Header.biClrImportant,  4, 1, file);
+    result &= fread(&aV5Header.biRedMask,       4, 1, file);
+    result &= fread(&aV5Header.biGreenMask,     4, 1, file);
+    result &= fread(&aV5Header.biBlueMask,      4, 1, file);
+    result &= fread(&aV5Header.biAlphaMask,     4, 1, file);
+    result &= fread(&aV5Header.biCSType,        4, 1, file);
+
+    result &= fread(&aV5Header.biEndpoints.ciexyzRed.ciexyzX,   4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzRed.ciexyzY,   4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzRed.ciexyzZ,   4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzGreen.ciexyzX, 4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzGreen.ciexyzY, 4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzGreen.ciexyzZ, 4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzBlue.ciexyzX,  4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzBlue.ciexyzY,  4, 1, file);
+    result &= fread(&aV5Header.biEndpoints.ciexyzBlue.ciexyzZ,  4, 1, file);
+
+    result &= fread(&aV5Header.biGammaRed,      4, 1, file);
+    result &= fread(&aV5Header.biGammaGreen,    4, 1, file);
+    result &= fread(&aV5Header.biGammaBlue,     4, 1, file);
+    result &= fread(&aV5Header.biIntent,        4, 1, file);
+    result &= fread(&aV5Header.biProfileData,   4, 1, file);
+    result &= fread(&aV5Header.biProfileSize,   4, 1, file);
+    result &= fread(&aV5Header.biReserved,      4, 1, file);
 
     if(isBigEndian())
         aV5Header.changeBytesOrder();
