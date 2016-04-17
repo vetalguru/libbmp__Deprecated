@@ -3,73 +3,49 @@
 
 #include "headers.h"
 #include <string>
+#include <vector>
 
 class BMPImage
 {
-public:
-    enum CompressionType
-    {
-        BI_RGB = 0,
-        BI_RLE8,
-        BI_RLE4,
-        BI_BITFIELDS,
-        BI_JPEG,
-        BI_PNG,
-        BI_ALPHABITFIELDS,
-    };
+    public:
+        struct PixelColor
+        {
+            unsigned char Red;
+            unsigned char Green;
+            unsigned char Blue;
+            unsigned char Alpha;
 
-    struct PixelColor
-    {
-        unsigned char redColor;
-        unsigned char greenColor;
-        unsigned char blueColor;
-    };
+            PixelColor()
+                : Red(0)
+                , Green(0)
+                , Blue(0)
+                , Alpha(0)
+            {}
+        };
 
-public:
-    BMPImage(const std::string& aFileName);
-    ~BMPImage();
+    public:
+        BMPImage();
+        BMPImage(const std::string& aFileName);
 
-    bool isValid();
+        ~BMPImage();
 
-    // File Header
-    unsigned short fileHeaderType();
-    unsigned int   fileHeaderSize();
-    unsigned short fileHeaderBitsOffset();
+        bool saveToFile(const std::string& aFileName);
 
-    unsigned width();
-    unsigned height();
+    private:
+        bool parseFile(const std::string& aFileName);
 
-    unsigned short bitCount();
-    CompressionType compressionType();
+        bool decodeBitmapFileHeader(std::ifstream& aStream, BITMAPFILEHEADER& aFileHeader);
+        bool decodeBitmapInfoHeader(std::ifstream& aStream, BITMAPINFOHEADER& aInfoHeader);
 
-private:
-    bool parseFile(const std::string& aFileName);
+        bool writeBitmapFileHeader(std::ofstream& aStream, BITMAPFILEHEADER& aFileHeader);
+        bool writeBitmapInfoHeader(std::ofstream& aStream, BITMAPINFOHEADER& aInfoHeader);
 
-    bool decodeBitmapFileHeader(FILE *file, BITMAPFILEHEADER& aFileHeader);
-    bool decodeBitmapInfoHeader(FILE *file);
+    private:
+        unsigned m_width;
+        unsigned m_height;
 
-    bool parseBitmapCoreHeader(FILE *file, BITMAPCOREHEADER& aCoreHeader);
-    bool parseBitmapInfoHeader(FILE *file, BITMAPINFOHEADER& aInfoHeader);
-    bool parseBitmapV4Header  (FILE *file, BITMAPV4HEADER&   aV4Header  );
-    bool parseBitmapV5Header  (FILE *file, BITMAPV5HEADER&   aV5Header  );
+        std::vector<std::vector<PixelColor> > m_bitmap;
 
-
-    CompressionType geTypeByIndex(unsigned aIndex);
-
-private:
-    bool m_isValid;
-
-    FILE *m_bmpFile;
-
-    BITMAPFILEHEADER m_fileHeader;
-
-    int m_width;
-    int m_height;
-
-    int m_imageSize;
-
-    unsigned short m_bitCount;
-    CompressionType m_compresionType;
 };
 
 #endif // LIB_BMP_H
