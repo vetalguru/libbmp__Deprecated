@@ -246,3 +246,13 @@ bool BMPImage::writeBitmapInfoHeader(std::ofstream& aStream, BITMAPINFOHEADER& a
 
     return true;
 }
+
+size_t BMPImage::width()
+{
+    return m_width;
+}
+
+size_t BMPImage::height()
+{
+    return m_height;
+}

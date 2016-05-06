@@ -29,6 +29,9 @@ class BMPImage
 
         ~BMPImage();
 
+        size_t width();
+        size_t height();
+
         bool saveToFile(const std::string& aFileName);
 
     private:
@@ -41,8 +44,8 @@ class BMPImage
         bool writeBitmapInfoHeader(std::ofstream& aStream, BITMAPINFOHEADER& aInfoHeader);
 
     private:
-        unsigned m_width;
-        unsigned m_height;
+        size_t m_width;
+        size_t m_height;
 
         std::vector<std::vector<PixelColor> > m_bitmap;
 
