@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class BMPImage;
+
 class BitmapView : public QWidget
 {
     Q_OBJECT
@@ -10,9 +12,13 @@ public:
     explicit BitmapView(QWidget *parent = 0);
     ~BitmapView();
 
+    bool openFile(const QString& aFileName);
+
 private:
     void paintEvent(QPaintEvent*);
 
+private:
+    BMPImage *m_image;
 };
 
 #endif // BITMAPVIEW_H

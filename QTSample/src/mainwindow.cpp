@@ -53,9 +53,9 @@ MainWindow::~MainWindow()
 // SLOTS
 void MainWindow::open()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("OpenFile"), "", tr("Text Files (*.txt);;C++ Files (*.cpp *.h)"));
+    QString fileName = QFileDialog::getOpenFileName(this, tr("OpenFile"), "", tr("All Files (*.*)"));
 
-    if(fileName != "")
+    /*if(fileName != "")
     {
         QFile file(fileName);
         if(!file.open(QIODevice::ReadOnly))
@@ -64,6 +64,12 @@ void MainWindow::open()
             return;
         }
         file.close();
+    }*/
+
+    if(!fileName.isEmpty())
+    {
+        m_viewPort->openFile(fileName);
+        m_viewPort->update();
     }
 }
 

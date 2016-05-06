@@ -6,6 +6,8 @@
 #include <QTextEdit>
 #include <QMenu>
 
+class BitmapView;
+
 namespace Ui {
 class MainWindow;
 }
@@ -26,7 +28,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QWidget *m_viewPort;
+    BitmapView *m_viewPort;
 
     QMenu   *m_fileMenu;
     QAction *m_openAction;
