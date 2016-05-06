@@ -256,3 +256,18 @@ size_t BMPImage::height()
 {
     return m_height;
 }
+
+bool BMPImage::pixelColor(const size_t aX, const size_t aY, BMPImage::PixelColor& aPixelColor)
+{
+    aPixelColor = PixelColor();
+
+    if(aX >= m_width)
+        return false;
+
+    if(aY >= m_height)
+        return false;
+
+    aPixelColor = m_bitmap.at(aY).at(aX);
+
+    return true;
+}

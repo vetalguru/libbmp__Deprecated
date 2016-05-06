@@ -32,6 +32,8 @@ class BMPImage
         size_t width();
         size_t height();
 
+        bool pixelColor(const size_t aX, const size_t aY, PixelColor& aPixelColor);
+
         bool saveToFile(const std::string& aFileName);
 
     private:
