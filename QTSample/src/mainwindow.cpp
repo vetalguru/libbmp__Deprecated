@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_aboutQtAction = new QAction(tr("&Aboout Qt"), this);
     m_aboutApp = new QAction(tr("&About..."), this);
 
-
     connect(m_openAction, SIGNAL(triggered()), this, SLOT(open()));
     connect(m_exitAction, SIGNAL(triggered()), this, SLOT(closeApp()));
     connect(m_aboutQtAction, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
@@ -54,18 +53,6 @@ MainWindow::~MainWindow()
 void MainWindow::open()
 {
     QString fileName = QFileDialog::getOpenFileName(this, tr("OpenFile"), "", tr("All Files (*.*)"));
-
-    /*if(fileName != "")
-    {
-        QFile file(fileName);
-        if(!file.open(QIODevice::ReadOnly))
-        {
-            QMessageBox::critical(this, tr("ERROR"), tr("Coulkd not open file"));
-            return;
-        }
-        file.close();
-    }*/
-
     if(!fileName.isEmpty())
     {
         m_viewPort->openFile(fileName);
@@ -75,6 +62,7 @@ void MainWindow::open()
 
 void MainWindow::closeApp()
 {
+    delete m_viewPort;
     close();
 }
 
