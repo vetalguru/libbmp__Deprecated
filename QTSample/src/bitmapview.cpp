@@ -15,6 +15,7 @@ BitmapView::BitmapView(QWidget *parent)
 
 BitmapView::~BitmapView()
 {
+    closeFile();
 }
 
 bool BitmapView::openFile(const QString& aFileName)
@@ -23,9 +24,21 @@ bool BitmapView::openFile(const QString& aFileName)
         return false;
 
     if(m_image)
-        return false;
+        closeFile();
 
     m_image = new BMPImage(aFileName.toStdString());
+
+    return m_image;
+}
+
+void BitmapView::closeFile()
+{
+    if(m_image)
+    {
+        delete m_image;
+        m_image = NULL;
+        update();
+    }
 }
 
 void BitmapView::paintEvent(QPaintEvent *)

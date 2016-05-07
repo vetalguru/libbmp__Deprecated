@@ -13,6 +13,7 @@ public:
     ~BitmapView();
 
     bool openFile(const QString& aFileName);
+    void closeFile();
 
 private:
     void paintEvent(QPaintEvent*);
